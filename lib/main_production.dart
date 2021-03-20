@@ -4,9 +4,8 @@ import 'package:instashop/my_app.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(Provider<flavour>.value(value: flavour.development,
+  runApp(Provider<flavour>.value(value: flavour.production,
   child: MyApp()));
 }
-
 
 

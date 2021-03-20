@@ -1,6 +1,11 @@
 
 
+
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:instashop/marketplace/cartpayment/cart.dart';
 import 'package:instashop/marketplace/category/categoryjson.dart';
 import 'package:instashop/marketplace/category/categoryproductmodel.dart';
 import 'package:instashop/marketplace/customwidget.dart';
@@ -20,6 +25,15 @@ productmodel model = productmodel();
 class _categorydetailState extends State<categorydetail> {
     List<int> _counter = []; 
     List<Map<String,int>> productName = [];
+
+List<Map<String,Map>> cartproductName = [];
+
+var cartitempair = {
+'name':'',
+'qty':'',
+'price':''
+};
+
 Map<String, dynamic> cartInfo = {
 };
 @override
@@ -32,8 +46,7 @@ void initState() {
 // print('detail view :${widget.categoryproductlist.map((e) => print(e.subcategorylist))}');
 widget.categoryproductlist.map((e) => {
   e.subcategorylist.map((e) => {
-    print(e.subcategoryname),
-    
+  print(e.subcategoryname),
   model = productmodel(id: e.id,imageurl: e.subcategoryimageurl,name: e.subcategoryname,price: e.subcategoryprice,productid: e.subcategoryid),
  categoryproductlists.add(model),
   }).toList()
@@ -46,9 +59,14 @@ print('length${categoryproductlists.last}');
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: ElevatedButton(onPressed: () { print(_counter.toString() );
-      
       print("cartInfo are $productName");
-      
+      print('cartproductName after $cartproductName');
+    
+
+         Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => cart(cartproductName: cartproductName,))
+  );
        },
       child: Text('Proceed'),),
         appBar: CustomAppBar(
@@ -57,7 +75,6 @@ print('length${categoryproductlists.last}');
         callback: (){
           Navigator.pop(context);
         },
-
     height: 80,
     title: 'Instashop',
   ),
@@ -68,20 +85,18 @@ body: GridView.builder(
   itemBuilder: (BuildContext context, index) {
     if(_counter.length < categoryproductlists.length){
       _counter.add(0);
-    
     }
-
  model = categoryproductlists[index];
-
 if(productName.length == categoryproductlists.length){
   print("objectpresent");
 }else{
   productName.add({model.name:0});
+  cartproductName.add({model.productid.toString():cartitempair});
    print("objectnotpresent");
 }
 
 
-
+print('cartproductName $cartproductName');
  
 
 return InkWell(child: Stack(
@@ -195,9 +210,26 @@ return InkWell(child: Stack(
 if(productName.length == categoryproductlists.length){
   print("objectpresent");
   productName[index].update(model.name, (value) => _counter[index]);
+  // cartproductName.add({model.productid:cartitempair});
+
+var items = {
+  'name':"${model.name}",
+  'qty':_counter[index],
+  'price':model.price.toString()
+};
+
+
+  cartproductName[index].update(model.productid.toString(), (value) => items);
+
+
+ 
+  
+  //  cartproductName[index].update(model.productid, (value) => {'qty':_counter[index]});
+  //   cartproductName[index].update(model.productid, (value) => {'price':model.price});
 }else{
  // productName.add({model.name:0});
    print("objectnotpresent");
+
 }
 
                             });

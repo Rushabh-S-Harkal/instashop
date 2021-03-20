@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:instashop/flavour.dart';
 import 'package:instashop/marketplace/category/category.dart';
 import 'package:instashop/marketplace/category/categoryjson.dart';
 import 'package:instashop/marketplace/customwidget.dart';
 import 'package:instashop/marketplace/location/userlocation.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:provider/provider.dart';
+import 'package:instashop/flavour.dart';
 var userAddress;
 var coordinates;
 
@@ -72,7 +75,7 @@ userAddress = value.first.addressLine;
     resizeToAvoidBottomInset: false,
   appBar: CustomAppBar(
     height: 70,
-    title: 'Instashop',   
+    title: Provider.of<flavour>(context).toString()//'Instashop',   
    // child: SearchWidget(hintText: 'Enter Text',onChanged:null,text: 'hi',),  
   ),
 
